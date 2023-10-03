@@ -8,13 +8,13 @@
  
  typedef struct Node
  {
-    int info;
+    char info;
     struct Node * prox;
 
  }Node;
 
- void push(int info, Node ** topo);
- int pop(Node ** topo);
+ void push(char info, Node ** topo);
+ char pop(Node ** topo);
 void listar(Node ** topo);
 
 
@@ -76,10 +76,10 @@ void listar(Node ** topo);
  de entrar nesse endereço, eu acessei o endereço para onde o ponteito ptrB aponta (variável a), derreferenciei, isto é, acessei o endereço
  de memória de a e mudei seu conteúdo para 10. */
 
-int main()
+/* int main()
 {
    Node * topo = NULL;
-   int info = 0;
+   char info[2];
 
 
    int opcao;
@@ -98,8 +98,9 @@ int main()
          case 1:
          {
             printf("\nDigite o valor do elemento: ");
-            scanf("%d", &info);
-            push(info,&topo);
+            fgets(info, 2 , stdin);
+            getchar();
+            push(info[0],&topo);
             break;
          }
          case 2:
@@ -121,8 +122,9 @@ int main()
    }while(opcao != 0);
 
    return 0;
-}
- void push(int info, Node ** topo)
+}  */
+
+ void push(char info, Node ** topo)
  {
    Node * novoElemento = (Node*)malloc(sizeof(Node));
    novoElemento->info = info;
@@ -136,7 +138,6 @@ int main()
    }
    else if(topo == NULL)
    {
-      printf("\nAQUI");
       /* O ponteiro de ponteiro armazena o endereço de memória do novo elemento(que é um ponteiro) */
       *topo = novoElemento;
    }
@@ -150,13 +151,13 @@ int main()
          *topo = novoElemento;
    }
 
-   printf("\nElemento empilhado com sucesso!\nO valor do novo topo eh: %d", (*topo)->info);
+   printf("\nElemento empilhado com sucesso!\nO valor do novo topo eh: %c", (*topo)->info);
 
  }
 
- int pop(Node ** topo)
+ char pop(Node ** topo)
  {    
-      int info;
+      char info;
       Node * aux = NULL;
 
       if(*topo == NULL)
@@ -184,7 +185,7 @@ int main()
       /* DICA! O compilador dá prioridade ao ->, então se quiser derreferenciar o topo para poder acessar os atributos (info || prox) 
       coloque entre parênteses para o compilador dá prioridade para a operação de derreferenciar */
 
-      printf("\nItem desempilhado com sucesso. O valor desempilhado foi: %d.", info);
+      printf("\nItem desempilhado com sucesso. O valor desempilhado foi: %c.", info);
 
       return info;
  }
@@ -202,7 +203,7 @@ int main()
 
    while(aux != NULL)
    {
-      printf("\nO item %d da pilha possui o valor: %d", count, aux->info);
+      printf("\nO item %d da pilha possui o valor: %c", count, aux->info);
       count++;
       aux = aux->prox;
    }
