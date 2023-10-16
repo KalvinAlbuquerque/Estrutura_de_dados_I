@@ -14,6 +14,7 @@ int main()
         printf("\n1.Inserir elemento");
         printf("\n2.Remover elemento");
         printf("\n3.Listar elementos");
+        printf("\n4.Gerar Nova lista com elementos impares e primos");
         printf("\n0.Sair");
         printf("\n\nDigite sua opcao: ");
         scanf("%d", &opcao);
@@ -39,6 +40,11 @@ int main()
                 limparTela();
                 listarElementos(&lista);
                 break;
+            }
+            case 4:
+            {
+                limparTela();
+                gerarNovaListaImparPrimos(&lista);
             }
             case 0:
             {

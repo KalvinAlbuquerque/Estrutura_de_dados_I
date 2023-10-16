@@ -101,3 +101,48 @@ void listarElementos(Nodo ** lista)
         }
     }
 }
+
+Nodo ** gerarNovaListaImparPrimos(Nodo ** lista)
+{
+    //1.Verificar se o número é primo e impar
+    //2.Criar uma nova lista
+    //3.Fazer o inicio da lista ser o primeiro numero impar e par
+    //4.realocar ponteiros com os seguintes numeros impares e pares
+
+    /* Criando nova lista */
+    Nodo * listaImparPrimo = (Nodo*) malloc(sizeof(Nodo));
+
+    /* Verificando se há memória disponível */
+    if(listaImparPrimo == NULL)
+    {
+        printf("\nNao ha memoria disponivel");
+        return NULL;
+    }
+
+    /* Verificando se a lista passada está vazia */
+    if(*lista == NULL)
+    {
+        printf("\nA lista esta vazia!");
+        return NULL;
+    }
+
+    /* Varrendo a lista passada para encontrar o primeiro número primo e ímpar para ser o início da nova lista */
+    Nodo * primeiroElementoDaNovaLista = *lista;
+    while(primeiroElementoDaNovaLista != NULL)
+    {
+        if(primeiroElementoDaNovaLista->info %2 != 0 && primeiroElementoDaNovaLista->info%3 != 0 && primeiroElementoDaNovaLista->info%5 !=0 && primeiroElementoDaNovaLista->info%7 !=0)
+        {
+            listaImparPrimo = primeiroElementoDaNovaLista;
+            break;
+        }
+
+        primeiroElementoDaNovaLista = primeiroElementoDaNovaLista->prox;
+    }
+
+    /* Encontrando todos os outros elementos ímpares e primos da lista e colocando-os na nova lista */
+    Nodo * elementoImparPrimo = listaImparPrimo;
+    while(elementoImparPrimo != NULL)
+    {
+
+    }
+}
