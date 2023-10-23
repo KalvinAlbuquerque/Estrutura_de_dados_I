@@ -13,10 +13,14 @@ typedef struct Nodo
 }Nodo;
 
 /* Funçoes referentes à lista */
+Nodo * gerarNovaListaImparPrimos(Nodo ** lista);
 void inserirElemento(Nodo ** lista, int info);
 int removerElemento(Nodo ** lista);
 void listarElementos(Nodo ** lista);
 int getTamanhoLista(Nodo ** lista);
+void retirarElementoPares(Nodo ** lista);
+int isPrime(int num);
+
 
 void inserirElemento(Nodo ** lista, int info)
 {
@@ -47,7 +51,6 @@ void inserirElemento(Nodo ** lista, int info)
         Nodo * finalDaLista = *lista;
         while(finalDaLista->prox != NULL)
         {
-            printf("\nInfo: %d", finalDaLista->info);
             finalDaLista = finalDaLista->prox; 
         }
 
@@ -100,49 +103,134 @@ void listarElementos(Nodo ** lista)
             aux = aux->prox;
         }
     }
+
+    printf("\n");
 }
 
-Nodo ** gerarNovaListaImparPrimos(Nodo ** lista)
+Nodo * gerarNovaListaImparPrimos(Nodo ** lista)
 {
-    //1.Verificar se o número é primo e impar
-    //2.Criar uma nova lista
-    //3.Fazer o inicio da lista ser o primeiro numero impar e par
-    //4.realocar ponteiros com os seguintes numeros impares e pares
-
     /* Criando nova lista */
-    Nodo * listaImparPrimo = (Nodo*) malloc(sizeof(Nodo));
+    Nodo * inicioNovaLista = NULL;
+    Nodo * inicioListaPrimordial = *lista;
+    Nodo * anteriorListaPrimordial = NULL;
+    Nodo * atualListaPrimordial = *lista;
 
-    /* Verificando se há memória disponível */
-    if(listaImparPrimo == NULL)
+    while(atualListaPrimordial != NULL)
     {
-        printf("\nNao ha memoria disponivel");
-        return NULL;
-    }
-
-    /* Verificando se a lista passada está vazia */
-    if(*lista == NULL)
-    {
-        printf("\nA lista esta vazia!");
-        return NULL;
-    }
-
-    /* Varrendo a lista passada para encontrar o primeiro número primo e ímpar para ser o início da nova lista */
-    Nodo * primeiroElementoDaNovaLista = *lista;
-    while(primeiroElementoDaNovaLista != NULL)
-    {
-        if(primeiroElementoDaNovaLista->info %2 != 0 && primeiroElementoDaNovaLista->info%3 != 0 && primeiroElementoDaNovaLista->info%5 !=0 && primeiroElementoDaNovaLista->info%7 !=0)
+        /* Verificando se o número é primo e ímpar */
+        if(atualListaPrimordial->info%2 != 0 && isPrime(atualListaPrimordial->info) == 1)
         {
-            listaImparPrimo = primeiroElementoDaNovaLista;
-            break;
-        }
+            /* Verificando se o primeiro elemento da lista inicial é ímpar e primo */
+            if(anteriorListaPrimordial == NULL)
+            {
+                /* Fazendo com que o início da lista inicial seja o segundo elemento*/
+                inicioListaPrimordial = atualListaPrimordial->prox;
 
-        primeiroElementoDaNovaLista = primeiroElementoDaNovaLista->prox;
+                /* Fazendo com que o elemento ímpar/primo aponte para o início da nova lista */
+                atualListaPrimordial->prox = inicioNovaLista;
+
+                /* Realocando o início da nova lista para o atual  */
+                inicioNovaLista = atualListaPrimordial;
+
+                /* Fazendo com que o atual retorne para a lista inicial */
+                atualListaPrimordial = inicioListaPrimordial;
+            }
+            else
+            {
+                /* Caso não seja o primeiro elemento da lista inicial */
+
+                /* Fazendo com que o item anterior aponte para o item subseguinte ao atual */
+                anteriorListaPrimordial->prox = atualListaPrimordial->prox;
+
+                /* Fazendo com que o atual aponte para o início da nova lista */
+                atualListaPrimordial->prox = inicioNovaLista;
+
+                /* Mudando o inicío da nova lista */
+                inicioNovaLista = atualListaPrimordial;
+
+                /* Fazendo com que o atual retorn para a lista inicial do ponto em que parou*/
+                atualListaPrimordial = anteriorListaPrimordial->prox;
+            }
+
+        }
+        else
+        {
+            /* Se não for um número ímpar ou par, apenas passo para o próximo */
+            anteriorListaPrimordial = atualListaPrimordial;
+            atualListaPrimordial = atualListaPrimordial->prox;
+        }
     }
 
-    /* Encontrando todos os outros elementos ímpares e primos da lista e colocando-os na nova lista */
-    Nodo * elementoImparPrimo = listaImparPrimo;
-    while(elementoImparPrimo != NULL)
-    {
+    listarElementos(&inicioNovaLista);
 
+    return inicioNovaLista;
+}
+
+int isPrime(int num)
+{
+    /* Número menores ou iguais a 1 não são primo */
+    if(num <= 1)
+    {
+        return 0;
+    }
+
+    /* 2 ,3, 5 e 7 são primos */
+    if(num <= 3 || num == 7 || num == 5)
+    {
+        return 1;
+    }
+
+    /* Se o número for divisível por 2, 3, 5 ou 7 ele não é primo */
+    if(num % 2 == 0 || num % 3 == 0 || num % 7 == 0 || num % 5 == 0) 
+    {
+        return 0;
+    }
+
+    return 1;
+
+}
+
+void retirarElementoPares(Nodo ** lista)
+{
+    Nodo * atual = *lista;
+    Nodo * anterior = NULL;
+
+    while(atual != NULL)
+    {
+        /* Verificando se o número é par */
+        if(atual->info %2 == 0)
+        {
+            /* Verificando se o número está no começo da lista*/
+            if(anterior == NULL)
+            {
+                /* Fazendo com que o início da lista aponte para o próximo elemento */
+                *lista = atual->prox;
+
+                /* Dando free no elemento par */
+                free(atual);
+
+                /* Fazendo com que o atual aponte para o início da lista novamente */
+                atual = *lista;
+            }
+            else
+            {
+                /* Caso o elemento par não esteja no início da lista */
+
+                /* Fazendo com que o anterior aponte para o item subseguinte ao atual */
+                anterior->prox = atual->prox;
+
+                /* Liberando o elemento par */
+                free(atual);
+
+                /* Fazendo com que atual seja o item subseguinte ao anterior */
+                atual = anterior->prox;
+            }
+        }
+        else
+        {
+            /* Se não for par, eu passo para o próximo */
+            anterior = atual;
+            atual = atual->prox;
+        }
     }
 }

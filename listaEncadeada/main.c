@@ -8,6 +8,7 @@ int main()
     int opcao;
     int info;
     Nodo * lista = NULL;
+    Nodo ** listaImparPrimo = NULL;
 
     do
     {
@@ -15,6 +16,7 @@ int main()
         printf("\n2.Remover elemento");
         printf("\n3.Listar elementos");
         printf("\n4.Gerar Nova lista com elementos impares e primos");
+        printf("\n5.Remover elementos pares");
         printf("\n0.Sair");
         printf("\n\nDigite sua opcao: ");
         scanf("%d", &opcao);
@@ -45,6 +47,13 @@ int main()
             {
                 limparTela();
                 gerarNovaListaImparPrimos(&lista);
+                break;
+            }
+            case 5:
+            {
+                limparTela();
+                retirarElementoPares(&lista);
+                break;
             }
             case 0:
             {
