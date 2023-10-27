@@ -250,7 +250,6 @@ void removerPalavra(Nodo ** end, Nodo ** start, Nodo ** selecionado)
     }
     else if(*selecionado == *start)
     {
-        printf("\naqui1");
         /* Verificando se é o primeiro da lista */
         *start = (*start)->next;
 
@@ -265,7 +264,6 @@ void removerPalavra(Nodo ** end, Nodo ** start, Nodo ** selecionado)
     }
     else if(*selecionado == *end)
     {
-        printf("\naqui 2");
         /* Se o selecionado for o último da fila */
         *end = (*end)->prev;
 
@@ -280,7 +278,6 @@ void removerPalavra(Nodo ** end, Nodo ** start, Nodo ** selecionado)
     }
     else
     {
-        printf("\naqui 3");
         /* Se o selecionado estiver no meio entre duas palavras */
 
         (*selecionado)->prev->next = (*selecionado)->next;
